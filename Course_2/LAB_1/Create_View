@@ -16,3 +16,42 @@ SELECT DISTINCT
  ORDER BY date DESC # latest transactions
  LIMIT 100
 ;
+ 
+ 
+ 
+ # Excercise
+ SELECT
+  date,
+  fullVisitorId,
+  visitId,
+  channelGrouping,
+  totalTransactionRevenue/1000000 AS revenue,
+  currencyCode,
+  v2ProductName,
+FROM
+  `data-to-insights.ecommerce.all_sessions_raw`
+WHERE
+  totalTransactionRevenue >= 1000000000
+  AND date >= '20170101'
+  AND currencyCode = 'USD'
+ORDER BY
+  date DESC
+LIMIT 10
+
+
+# Seeking which product make the highest revenue
+SELECT DISTINCT
+  date,
+  fullVisitorId,
+  visitId,
+  channelGrouping,
+  totalTransactionRevenue / 1000000 AS totalTransactionRevenue,
+  currencyCode,
+  STRING_AGG(DISTINCT v2ProductName ORDER BY v2ProductName LIMIT 10) AS products_ordered
+ FROM `data-to-insights.ecommerce.all_sessions_raw`
+ WHERE
+  (totalTransactionRevenue / 1000000) > 1000
+  AND currencyCode = 'USD'
+ GROUP BY 1,2,3,4,5,6
+  ORDER BY date DESC # latest transactions
+  LIMIT 10
