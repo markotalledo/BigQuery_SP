@@ -1,5 +1,9 @@
 #standardSQL
 CREATE OR REPLACE VIEW ecommerce.vw_latest_transactions
+OPTIONS(
+  description="large transactions for review",
+  labels=[('org_unit','loss_prevention')]
+)
 AS
 SELECT DISTINCT
   date,
